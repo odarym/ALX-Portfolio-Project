@@ -3,7 +3,38 @@
 
 	include_once "includes/header.php"
 ?>
-
+<?php 
+	if(!empty($_POST))
+	{
+		echo "POSTED MF";
+		//validate
+		$errors = [];
+		
+		$query = "select * from users where email = :email limit 1";
+		$row = query($query, ['email'=>$_POST['email']]);
+		
+		if($row)
+		{
+			$data = [];
+			if(password_verify($_POST['password'], $row[0]['password']))
+			{
+				//grant access
+				authenticate($row[0]);
+				redirect('admin');
+			
+			}
+			else
+			{
+			  $errors['email'] = "wrong email or password";
+			}
+		
+		}
+		else
+		{
+		  	$errors['email'] = "wrong email or password";
+		}
+	}
+?>
 
 	<section class="vh-100" style="background-color: #00008B;">
 	  <div class="container py-5 h-100">
@@ -28,18 +59,18 @@
 	                  <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Sign into your account</h5>
 
 	                  <div data-mdb-input-init class="form-outline mb-4">
-	                    <input name="email" type="email" class="form-control form-control-lg" />
+	                    <input name="email" type="email" class="form-control form-control-lg" required />
 	                    <label class="form-label" for="form2Example17">Email address</label>
 	                  </div>
 
 	                  <div data-mdb-input-init class="form-outline mb-4">
-	                    <input name="password" type="password" class="form-control form-control-lg" />
+	                    <input name="password" type="password" class="form-control form-control-lg" required />
 	                    <label class="form-label" for="form2Example27">Password</label>
 	                  </div>
 
 					  <!-- Checkbox -->
               		  <div class="form-check d-flex justify-content-center mb-4">
-              		    <input name="remember-me" class="form-check-input me-2" type="checkbox" value="" id="form2Example33" checked />
+              		    <input name="remember-me" class="form-check-input me-2" type="checkbox" value="" id="form2Example33" required />
               		    <label class="form-check-label" for="form2Example33">
               		      Remember me
               		    </label>
