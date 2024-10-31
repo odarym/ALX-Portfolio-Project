@@ -98,9 +98,8 @@ function query_row(string $query, array $data = [])
 
 function redirect($page)
 {
-
-	header('Location: '.ROOT. '/' . $page);
-	die;
+    header('Location: '.ROOT. '/' . $page);
+    die();
 }
 
 function old_value($key, $default = '')
