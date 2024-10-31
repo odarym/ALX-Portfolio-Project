@@ -1,9 +1,9 @@
 <?php
-	$pageTitle = "Index";
+	include_once "core/init.php";
 
+	$pageTitle = "Index";
 	include_once "includes/header.php";
 
-	
 
 	
 
