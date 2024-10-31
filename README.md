@@ -1,4 +1,4 @@
-# How to Run a PHP Blog Website Using XAMPP
+# How to Run OdaKira Blog Website Using XAMPP
 
 ## Introduction
 XAMPP is a free and open-source cross-platform web server solution stack package developed by Apache Friends, consisting mainly of the Apache HTTP Server, MariaDB database, and interpreters for scripts written in the PHP and Perl programming languages.
