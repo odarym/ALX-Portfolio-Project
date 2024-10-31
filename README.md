@@ -26,35 +26,6 @@ This guide will walk you through the steps to set up and run a PHP blog website 
 1. If you have an existing PHP blog, copy the files into a new directory within the `htdocs` directory of your XAMPP installation (e.g., `C:\xampp\htdocs\blog`).
 2. If you don't have a blog, you can use a simple example provided below.
 
-**Example index.php:**
-```php
-<?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "blogdb";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-$sql = "SELECT id, title, content FROM posts";
-$result = $conn->query($sql);
-
-if ($result->num_rows > 0) {
-    while($row = $result->fetch_assoc()) {
-        echo "<h2>" . $row["title"]. "</h2><p>" . $row["content"]. "</p>";
-    }
-} else {
-    echo "0 results";
-}
-$conn->close();
-?>
-
 Configure Your Database
 Navigate back to phpMyAdmin (http://localhost/phpmyadmin/).
 
