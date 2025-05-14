@@ -52,7 +52,3 @@ Port Issues: If Apache won't start, check if another application is using port 8
 Database Connection: Ensure your MySQL service is running and the database credentials in your PHP file are correct.
 
 Permissions: Ensure your htdocs folder and its contents have the correct permissions for Apache to read them.
-
-Conclusion
-Congratulations! You have successfully set up and run a PHP blog website using XAMPP. You can now start customizing your blog, adding new features, and making it your own. Happy coding!
-
