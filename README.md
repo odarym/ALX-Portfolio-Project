@@ -1,54 +1,134 @@
-# How to Run OdaKira Blog Website Using XAMPP
+# OdaKira Blog & CMS Platform
 
-## Introduction
-XAMPP is a free and open-source cross-platform web server solution stack package developed by Apache Friends, consisting mainly of the Apache HTTP Server, MariaDB database, and interpreters for scripts written in the PHP and Perl programming languages.
+**OdaKira** is a dynamic blog and Content Management System (CMS) web application built with **PHP 8.x**, **MySQL/MariaDB**, and **Bootstrap 5.3**. It features front-controller routing, secure user authentication, role-based administration, image processing utilities, and a fully responsive theme supporting both **Light Mode** and **Dark Mode**.
 
-This guide will walk you through the steps to set up and run a PHP blog website locally on your computer using XAMPP.
+---
 
-## Prerequisites
-- A computer with Windows, macOS, or Linux.
-- Basic understanding of PHP and MySQL.
-- XAMPP installed on your computer. You can download it from [Apache Friends](https://www.apachefriends.org/index.html).
+## Getting Started / Setup
 
-## Steps
+You can run OdaKira either **standalone using automated scripts (no XAMPP required)** or **using an existing XAMPP installation**.
 
-### 1. Install XAMPP
-1. Download XAMPP from the [Apache Friends website](https://www.apachefriends.org/index.html).
-2. Follow the installation instructions specific to your operating system.
-3. Launch the XAMPP Control Panel and start the Apache and MySQL services.
+---
 
-### 2. Set Up Your Database
+### Option 1: Standalone Setup via Scripts *(Recommended - No XAMPP Required)*
+
+OdaKira includes an all-in-one launcher script in the [`scripts/`](file:///C:/dev/alx/ALX-Portfolio-Project/scripts) directory that sets up standalone PHP, configures extensions, provisions the database, and launches PHP's built-in development server.
+
+#### Launching the Website
+Double-click [`scripts/launch.bat`](file:///C:/dev/alx/ALX-Portfolio-Project/scripts/launch.bat) or run from your terminal:
+
+```cmd
+scripts\launch.bat
+```
+
+*This automatically:*
+1. Detects or downloads official standalone **PHP 8.3** (if missing).
+2. Configures required PHP extensions (`pdo_mysql`, `gd`, `mbstring`, `fileinfo`, `curl`, `openssl`).
+3. Connects to MySQL/MariaDB and imports schema & seed data from [`src/myblog_db.sql`](file:///C:/dev/alx/ALX-Portfolio-Project/src/myblog_db.sql).
+4. Starts the local development web server from `src/` and opens **[http://localhost:8000/home](http://localhost:8000/home)** in your browser.
+
+---
+
+### Option 2: Using XAMPP *(If already installed)*
+
+If you already have XAMPP installed on your computer, you can run the project using Apache and MySQL:
+
+#### Step 1: Place Project in `htdocs`
+Copy or clone this repository into your XAMPP web root directory:
+```
+C:\xampp\htdocs\odakira
+```
+
+#### Step 2: Start Apache and MySQL
+Open the **XAMPP Control Panel** and click **Start** next to both **Apache** and **MySQL**.
+
+#### Step 3: Import the Database
 1. Open your browser and go to `http://localhost/phpmyadmin/`.
-2. Click on the "Databases" tab.
-3. Create a new database for your blog (e.g., `blogdb`).
+2. Create a new database named `myblog_db`.
+3. Select the `myblog_db` database and click the **Import** tab.
+4. Choose the SQL dump file located at `src/myblog_db.sql` and click **Import**.
 
-### 3. Download or Create Your Blog Files
-1. If you have an existing PHP blog, copy the files into a new directory within the `htdocs` directory of your XAMPP installation (e.g., `C:\xampp\htdocs\blog`).
-2. If you don't have a blog, you can use a simple example provided below.
+#### Step 4: Access the Website
+Open your browser and navigate to:
+```
+http://localhost/odakira/src/home
+```
 
-Configure Your Database
-Navigate back to phpMyAdmin (http://localhost/phpmyadmin/).
+---
 
-Select your blogdb database.
+## System Cleanup
 
-Create a new table named posts with the following columns:
+When you are done testing and want to stop running servers, clean temporary caches, and restore your system to its original state:
 
-id (INT, AUTO_INCREMENT, PRIMARY KEY)
+Double-click [`scripts/cleanup.bat`](file:///C:/dev/alx/ALX-Portfolio-Project/scripts/cleanup.bat) or run from your terminal:
 
-title (VARCHAR, 255)
+```cmd
+scripts\cleanup.bat
+```
 
-content (TEXT)
+---
 
-Insert sample data into the posts table.
+## Project Structure
 
-5. Access Your Blog
-Open your browser and go to http://localhost/blog/.
+```
+ALX-Portfolio-Project/
+├── LICENSE                            # MIT License
+├── README.md                          # Project documentation and setup guide
+├── src/                               # Main Application Source Code
+│   ├── index.php                      # Front controller & dynamic router
+│   ├── home.php                       # Homepage view with carousel
+│   ├── blogs.php                      # Interactive blog showcase
+│   ├── login.php                      # User login view & authentication
+│   ├── signup.php                     # User registration view
+│   ├── admin.php                      # Admin dashboard (protected by RBAC)
+│   ├── logout.php                     # Session termination & logout handler
+│   ├── 404.php                        # Error fallback view
+│   ├── myblog_db.sql                  # Database schema dump & seed records
+│   ├── core/                          # Backend business logic
+│   │   ├── config.php                 # Dynamic ROOT base URL configuration
+│   │   ├── init.php                   # Session bootstrap & core loader
+│   │   ├── functions.php              # Query helpers, sanitization, image utilities
+│   │   └── db/
+│   │       └── conn.php               # Database connection parameters
+│   ├── includes/                      # Reusable UI component partials
+│   │   ├── header.php                 # Global navigation bar & theme switcher
+│   │   └── footer.php                 # Global theme-responsive footer
+│   └── assets/                        # Static assets (CSS, JS, Fonts, Sliders)
+└── scripts/                           # Standalone automation & launcher tools
+    ├── launch.bat                     # All-in-one setup, DB provisioner, and server runner
+    ├── cleanup.bat                    # System cleanup and process termination utility
+    ├── init_db.php                    # Portable database provisioning script
+    ├── router.php                     # Built-in PHP server URL router
+    └── README.md                      # Scripts documentation
+```
 
-You should see the blog page displaying the posts from your database.
+---
 
-Troubleshooting
-Port Issues: If Apache won't start, check if another application is using port 80. You can change the port in the XAMPP Control Panel by clicking 'Config' next to Apache and editing the httpd.conf file.
+## Key Features
 
-Database Connection: Ensure your MySQL service is running and the database credentials in your PHP file are correct.
+* **Light & Dark Mode**: Full Bootstrap 5.3 dark-mode support across all pages (Home, Blogs, Login, Sign Up, Admin).
+* **Dynamic Front Controller**: Clean URL routing through [`src/index.php`](file:///C:/dev/alx/ALX-Portfolio-Project/src/index.php).
+* **Database Abstraction Layer**: Secure parameterized queries using PHP PDO (`query()`, `query_row()`).
+* **Authentication & RBAC**: Secure password hashing (`bcrypt`), session management, and admin route protection.
+* **Image Processing**: Automatic thumbnail generation and sanitization for rich text uploads.
 
-Permissions: Ensure your htdocs folder and its contents have the correct permissions for Apache to read them.
+---
+
+## Default Database Accounts
+
+The sample database dump (`src/myblog_db.sql`) includes pre-seeded working test accounts:
+
+| Role | Username | Email | Password | Access Level |
+| :--- | :--- | :--- | :--- | :--- |
+| **Admin** | `Admin` | `admin@odakira.com` | `password` | Full access (can view `/admin` dashboard) |
+| **Admin** | `alisha` | `alisha@email.com` | `password` | Full access (can view `/admin` dashboard) |
+| **User** | `Eathorne` | `email@email.com` | `password` | Standard user account |
+| **User** | `Edd` | `ed@email.com` | `password` | Standard user account |
+| **User** | `Mary` | `mary@email.com` | `password` | Standard user account |
+
+
+---
+
+## License
+
+This project is licensed under the terms specified in the [LICENSE](LICENSE) file.
